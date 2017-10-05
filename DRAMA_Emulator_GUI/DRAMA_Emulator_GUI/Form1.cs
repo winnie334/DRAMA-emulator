@@ -14,8 +14,9 @@ namespace DRAMA_Emulator_GUI
     
     public partial class Form1 : Form
     {
-        public List<string> textLines = new List<string>();
-        
+
+        public List<Command> CommandList = new List<Command>();
+
         public Form1()
         {
             InitializeComponent();
@@ -24,20 +25,54 @@ namespace DRAMA_Emulator_GUI
         private void ButtonRun_Click(object sender, EventArgs e)
         {
             //Do stuff
-            textLines.Clear();
-            textLines.Add("");
             ReadTextBox();
         }
 
 
         private void ReadTextBox()
         {
-            /*textLines.Add(textEditor.Text.Split('\n'));
-            foreach(var line in textLines)
+            string[] textLines = CodeText.Text.Split('\n');
+            int i = 1;
+            foreach (string line in textLines)
             {
+                if (String.IsNullOrWhiteSpace(line))
+                {
+                    Console.WriteLine("Lijn is leeg");
 
-            }*/
+                }
+                else
+                {
+                    Console.WriteLine("niet leeg");
+                    //verwerkfunctie
+                    CommandList.Add(new Command
+                    {
+                        LijnNummer = i,
+
+
+                    });
+                }
+                i++;
+            }
         }
-        
+
+        private void VerwerkLijn(string lijn)
+        {
+            char[] charSeperators = new char[] { ' ', '.', ',' };
+            string[] s = lijn.Split(default(Char[]), StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string element in s)
+            {
+                Console.WriteLine(element);
+                switch (element)
+                {
+                    case "HIA":
+                        break;
+                    case "BIG":
+                        break;
+                    case "":
+                        break;
+                }
+            }
+        }
     }
 }
