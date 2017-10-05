@@ -31,7 +31,7 @@ namespace DRAMA_Emulator_GUI
 
         private void ReadTextBox()
         {
-            string[] textLines = CodeText.Text.Split('\n');
+            string[] textLines = textEditor.Text.Split('\n');
             int i = 1;
             foreach (string line in textLines)
             {

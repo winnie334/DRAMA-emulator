@@ -35,9 +35,10 @@ namespace DRAMA_Emulator_GUI
             // 
             // buttonRun
             // 
-            this.buttonRun.Location = new System.Drawing.Point(12, 12);
+            this.buttonRun.Location = new System.Drawing.Point(16, 15);
+            this.buttonRun.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonRun.Name = "buttonRun";
-            this.buttonRun.Size = new System.Drawing.Size(92, 32);
+            this.buttonRun.Size = new System.Drawing.Size(123, 39);
             this.buttonRun.TabIndex = 1;
             this.buttonRun.Text = "buttonRun";
             this.buttonRun.UseVisualStyleBackColor = true;
@@ -45,19 +46,21 @@ namespace DRAMA_Emulator_GUI
             // 
             // textEditor
             // 
-            this.textEditor.Location = new System.Drawing.Point(12, 64);
+            this.textEditor.Location = new System.Drawing.Point(16, 79);
+            this.textEditor.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textEditor.Name = "textEditor";
-            this.textEditor.Size = new System.Drawing.Size(593, 653);
+            this.textEditor.Size = new System.Drawing.Size(789, 803);
             this.textEditor.TabIndex = 2;
             this.textEditor.Text = "scintilla1";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(617, 729);
+            this.ClientSize = new System.Drawing.Size(823, 897);
             this.Controls.Add(this.textEditor);
             this.Controls.Add(this.buttonRun);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
