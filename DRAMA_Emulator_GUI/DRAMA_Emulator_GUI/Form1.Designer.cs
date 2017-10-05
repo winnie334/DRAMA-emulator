@@ -1,4 +1,5 @@
-﻿namespace DRAMA_Emulator_GUI
+﻿using ScintillaNET;
+namespace DRAMA_Emulator_GUI
 {
     partial class Form1
     {
@@ -28,17 +29,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.CodeText = new System.Windows.Forms.RichTextBox();
             this.buttonRun = new System.Windows.Forms.Button();
+            this.textEditor = new ScintillaNET.Scintilla();
             this.SuspendLayout();
-            // 
-            // CodeText
-            // 
-            this.CodeText.Location = new System.Drawing.Point(12, 61);
-            this.CodeText.Name = "CodeText";
-            this.CodeText.Size = new System.Drawing.Size(593, 656);
-            this.CodeText.TabIndex = 0;
-            this.CodeText.Text = "";
             // 
             // buttonRun
             // 
@@ -50,13 +43,21 @@
             this.buttonRun.UseVisualStyleBackColor = true;
             this.buttonRun.Click += new System.EventHandler(this.ButtonRun_Click);
             // 
+            // textEditor
+            // 
+            this.textEditor.Location = new System.Drawing.Point(12, 64);
+            this.textEditor.Name = "textEditor";
+            this.textEditor.Size = new System.Drawing.Size(593, 653);
+            this.textEditor.TabIndex = 2;
+            this.textEditor.Text = "scintilla1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(617, 729);
+            this.Controls.Add(this.textEditor);
             this.Controls.Add(this.buttonRun);
-            this.Controls.Add(this.CodeText);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -64,9 +65,8 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.RichTextBox CodeText;
         private System.Windows.Forms.Button buttonRun;
+        private Scintilla textEditor;
     }
 }
 
