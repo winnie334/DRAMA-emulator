@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ScintillaNET;
 
 namespace DRAMA_Emulator_GUI
 {
@@ -46,8 +45,7 @@ namespace DRAMA_Emulator_GUI
                     //verwerkfunctie
                     CommandList.Add(new Command
                     {
-                        LijnNummer = i,
-
+                        LineNumber = i,
 
                     });
                 }
@@ -55,24 +53,126 @@ namespace DRAMA_Emulator_GUI
             }
         }
 
-        private void VerwerkLijn(string lijn)
+        private (string, char) ProcessLine(string line)
         {
-            char[] charSeperators = new char[] { ' ', '.', ',' };
-            string[] s = lijn.Split(default(Char[]), StringSplitOptions.RemoveEmptyEntries);
+            string FunctionCode = "";
+            char InterpretationField = '\0';
+            string LeftAccumulator = "";
+            string RightAcumulator = "";
+            string LineJump = "";
 
-            foreach (string element in s)
+            if (line.Contains(':'))
+            {
+                int v = line.IndexOf(':');
+                LineJump = line.Substring(0, v++);
+                line = line.Substring(v);
+            }
+
+            char[] charSeperators = new char[] { ' ', '.', ',' };
+            string[] splitLine = line.Split(default(Char[]), StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string element in splitLine)
             {
                 Console.WriteLine(element);
                 switch (element)
                 {
                     case "HIA":
+                        FunctionCode = "HIA";
                         break;
                     case "BIG":
+                        FunctionCode = "BIG";
                         break;
+                    case "OPT":
+                        FunctionCode = "OPT";
+                        break;
+                    case "AFT":
+                        FunctionCode = "AFT";
+                        break;
+                    case "VER":
+                        FunctionCode = "VER";
+                        break;
+                    case "DEL":
+                        FunctionCode = "DEL";
+                        break;
+                    case "MOD":
+                        FunctionCode = "MOD";
+                        break;
+                    case "LEZ":
+                        FunctionCode = "LEZ";
+                        break;
+                    case "DRU":
+                        FunctionCode = "DRU";
+                        break;
+                    case "NWL":
+                        FunctionCode = "NWL";
+                        break;
+                    case "DRS":
+                        FunctionCode = "DRS";
+                        break;
+                    case "VGL":
+                        FunctionCode = "VGL";
+                        break;
+                    case "VSP":
+                        FunctionCode = "VSP";
+                        break;
+                    case "SPR":
+                        FunctionCode = "SPR";
+                        break;
+                    case "i":
+                        InterpretationField = 'i';
+                        break;
+                    case "w":
+                        InterpretationField = 'w';
+                        break;
+                    case "d":
+                        InterpretationField = 'd';
+                        break;
+                    case "a":
+                        InterpretationField = 'a';
+                        break;
+                    case "":
+                        break;
+                    default:
+                        //throw error
+                        break;
+                }
+            }
+            return (FunctionCode, InterpretationField);
+        }
+
+        private void ProcessHIA(string[] s, string l)
+        {
+            if (l.Contains("."))
+            {
+                int i = l.IndexOf(".");
+                char InterpretationField = l[9];
+                switch (InterpretationField)
+                {
+                    case 'w':
+                        break;
+                    case 'a':
+                        break;
+                    case 'd':
+                        break;
+                    case 'i':
+                        break;
+                    default:
+                        //throw error
+                        break;
+                }
+            }
+            foreach (string element in s)
+            {
+                switch (element)
+                {
                     case "":
                         break;
                 }
             }
+        }
+        private void ProcessBIG(string[] s)
+        {
+
         }
     }
 }

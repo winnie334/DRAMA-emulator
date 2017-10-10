@@ -8,11 +8,11 @@ namespace DRAMA_Emulator_GUI
 {
     public class Command
     {
-        public int LijnNummer { get; set; }
-        public string FunctieCode { get; set; }
-        public string LinkerDoel { get; set; }
-        public string RechterDoel { get; set; }
-        public string SprongLijn { get; set; } //kan lijnnummer of variabele zijn, nodig bij VSP/SPR
-        public string Variabele { get; set; }
+        public int LineNumber { get; set; }
+        public string FunctionCode { get; set; }
+        public string FirstParam { get; set; }
+        public string SecondParam { get; set; }
+        public string LineJump { get; set; } //kan lijnnummer of variabele zijn, nodig bij VSP/SPR
+        public string Variable { get; set; }
     }
 }
