@@ -32,6 +32,8 @@ namespace DRAMA_Emulator_GUI
         {
             string[] textLines = textEditor.Text.Split('\n');
             int i = 1;
+            
+
             foreach (string line in textLines)
             {
                 if (String.IsNullOrWhiteSpace(line))
@@ -42,30 +44,45 @@ namespace DRAMA_Emulator_GUI
                 else
                 {
                     Console.WriteLine("niet leeg");
-                    //verwerkfunctie
+                    var zooi = ProcessLine(line); //to change variable name
+
                     CommandList.Add(new Command
                     {
                         LineNumber = i,
-
+                        FunctionCode = zooi.functionCode,
+                        
                     });
                 }
                 i++;
             }
         }
 
-        private (string, char) ProcessLine(string line)
+        private (string functionCode, char interpretationField, string leftAccumulator, string rightAccumulator, string lineJump) ProcessLine(string line)
         {
-            string FunctionCode = "";
-            char InterpretationField = '\0';
-            string LeftAccumulator = "";
-            string RightAcumulator = "";
-            string LineJump = "";
+            string functionCode = "";
+            char interpretationField = '\0';
+            string leftAccumulator = "";
+            string rightAccumulator = "";
+            string lineJump = "";
 
+            //Seperate 
             if (line.Contains(':'))
             {
                 int v = line.IndexOf(':');
-                LineJump = line.Substring(0, v++);
+                lineJump = line.Substring(0, v++);
                 line = line.Substring(v);
+            }
+
+            //Seperate accumulators from line
+            if (line.Contains(','))
+            {
+                int v = line.IndexOf(',');
+                string leftPart = line.Substring(0, v);
+                int leftSpacePosition = leftPart.LastIndexOf(" ");
+                leftAccumulator = leftPart.Substring(++leftSpacePosition);
+                string rightPart = line.Substring(++v);
+                int rightSpacePosition = rightPart.IndexOf(" ");
+                rightAccumulator = rightPart.Substring(0, rightSpacePosition);
             }
 
             char[] charSeperators = new char[] { ' ', '.', ',' };
@@ -77,58 +94,58 @@ namespace DRAMA_Emulator_GUI
                 switch (element)
                 {
                     case "HIA":
-                        FunctionCode = "HIA";
+                        functionCode = "HIA";
                         break;
                     case "BIG":
-                        FunctionCode = "BIG";
+                        functionCode = "BIG";
                         break;
                     case "OPT":
-                        FunctionCode = "OPT";
+                        functionCode = "OPT";
                         break;
                     case "AFT":
-                        FunctionCode = "AFT";
+                        functionCode = "AFT";
                         break;
                     case "VER":
-                        FunctionCode = "VER";
+                        functionCode = "VER";
                         break;
                     case "DEL":
-                        FunctionCode = "DEL";
+                        functionCode = "DEL";
                         break;
                     case "MOD":
-                        FunctionCode = "MOD";
+                        functionCode = "MOD";
                         break;
                     case "LEZ":
-                        FunctionCode = "LEZ";
+                        functionCode = "LEZ";
                         break;
                     case "DRU":
-                        FunctionCode = "DRU";
+                        functionCode = "DRU";
                         break;
                     case "NWL":
-                        FunctionCode = "NWL";
+                        functionCode = "NWL";
                         break;
                     case "DRS":
-                        FunctionCode = "DRS";
+                        functionCode = "DRS";
                         break;
                     case "VGL":
-                        FunctionCode = "VGL";
+                        functionCode = "VGL";
                         break;
                     case "VSP":
-                        FunctionCode = "VSP";
+                        functionCode = "VSP";
                         break;
                     case "SPR":
-                        FunctionCode = "SPR";
+                        functionCode = "SPR";
                         break;
                     case "i":
-                        InterpretationField = 'i';
+                        interpretationField = 'i';
                         break;
                     case "w":
-                        InterpretationField = 'w';
+                        interpretationField = 'w';
                         break;
                     case "d":
-                        InterpretationField = 'd';
+                        interpretationField = 'd';
                         break;
                     case "a":
-                        InterpretationField = 'a';
+                        interpretationField = 'a';
                         break;
                     case "":
                         break;
@@ -137,7 +154,7 @@ namespace DRAMA_Emulator_GUI
                         break;
                 }
             }
-            return (FunctionCode, InterpretationField);
+            return (functionCode, interpretationField, leftAccumulator, rightAccumulator, lineJump);
         }
 
         private void ProcessHIA(string[] s, string l)

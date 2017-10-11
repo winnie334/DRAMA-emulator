@@ -52,6 +52,7 @@ namespace DRAMA_Emulator_GUI
             this.textEditor.Size = new System.Drawing.Size(789, 803);
             this.textEditor.TabIndex = 2;
             this.textEditor.Text = "scintilla1";
+            this.textEditor.Margins[0].Width = 16;
             // 
             // Form1
             // 
