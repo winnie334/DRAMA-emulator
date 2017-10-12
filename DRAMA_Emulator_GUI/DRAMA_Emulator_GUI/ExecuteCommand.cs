@@ -10,11 +10,23 @@ namespace DRAMA_Emulator_GUI
     {
         internal static void Execute(List<Command> CommandList)
         {
-            CommandList.
+            //Check variables
+
+           foreach(var list in CommandList)
+            {
+                if (!list.Variable.Equals(""))
+                {
+                    ProcessVars(CommandList.IndexOf(list));
+                }
+            }
         }
 
 
-
+        private static void ProcessVars(int index)
+        {
+            //lijst voor variabelen
+            
+        }
 
         private void ProcessHIA(string[] s, string l)
         {

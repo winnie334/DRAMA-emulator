@@ -99,6 +99,7 @@ namespace DRAMA_Emulator_GUI
                 rightAccumulator = rightPart.Substring(0, rightPartEnd);
                 if (!rightAccumulator.IsNumeric())
                 {
+                    //Check if Rx
                     variable = rightAccumulator;
                 }
 
