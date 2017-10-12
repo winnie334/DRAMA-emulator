@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace DRAMA_Emulator_GUI
 {
-    
+
     public partial class Form1 : Form
     {
 
@@ -22,7 +22,6 @@ namespace DRAMA_Emulator_GUI
 
         private void ButtonRun_Click(object sender, EventArgs e)
         {
-            //Do stuff
             ReadTextBox();
         }
 
@@ -31,7 +30,6 @@ namespace DRAMA_Emulator_GUI
         {
             string[] textLines = textEditor.Text.Split('\n');
             int i = 1;
-            
 
             foreach (string line in textLines)
             {
@@ -53,16 +51,18 @@ namespace DRAMA_Emulator_GUI
                         FirstParam = processedLine.leftAccumulator,
                         SecondParam = processedLine.rightAccumulator,
                         LineJump = processedLine.lineJump,
-                        Variable = processedLine.variable
-                        
+                        Variable = processedLine.variable,
+                        Register = processedLine.register
+
                     });
                 }
                 i++;
             }
-            ExecuteCommand.Execute(CommandList);
+            ExecuteCommand exec = new ExecuteCommand();
+            exec.Execute(CommandList);
         }
 
-        private (string functionCode, char interpretationField, string leftAccumulator, string rightAccumulator, string lineJump, string variable) ProcessLine(string line)
+        private (string functionCode, char interpretationField, string leftAccumulator, string rightAccumulator, string lineJump, string variable, string register) ProcessLine(string line)
         {
             string functionCode = "";
             char interpretationField = '\0';
@@ -70,6 +70,7 @@ namespace DRAMA_Emulator_GUI
             string rightAccumulator = "";
             string lineJump = "";
             string variable = "";
+            string register = "";
 
             //Seperate
             if (line.Contains(':'))
@@ -89,18 +90,29 @@ namespace DRAMA_Emulator_GUI
                 string rightPart = line.Substring(++v);
 
                 int rightPartEnd = 0;
-                if(rightPart.Contains(" "))
+                if (rightPart.Contains(" "))
                     rightPartEnd = rightPart.IndexOf(" ");
-                
+
                 else
                     rightPartEnd = rightPart.Length - 1;
-                
-                
+
+
                 rightAccumulator = rightPart.Substring(0, rightPartEnd);
                 if (!rightAccumulator.IsNumeric())
                 {
                     //Check if Rx
-                    variable = rightAccumulator;
+                    int i;
+                    for (i = 0; i < 10; i++)
+                    {
+                        if (rightAccumulator.Equals("R" + i))
+                        {
+                            register = rightAccumulator;
+                            break;
+                        }
+
+                    }
+                    if (i == 10)
+                        variable = rightAccumulator;
                 }
 
                 line = line.Substring(0, leftSpacePosition);
@@ -188,10 +200,10 @@ namespace DRAMA_Emulator_GUI
                         break;
                 }
             }
-            return (functionCode, interpretationField, leftAccumulator, rightAccumulator, lineJump, variable);
+            return (functionCode, interpretationField, leftAccumulator, rightAccumulator, lineJump, variable, register);
         }
 
-        
+
         private void ProcessBIG(string[] s)
         {
 
@@ -202,8 +214,7 @@ namespace DRAMA_Emulator_GUI
     {
         public static bool IsNumeric(this string input)
         {
-            int number;
-            return int.TryParse(input, out number);
+            return int.TryParse(input, out int number);
         }
     }
 }

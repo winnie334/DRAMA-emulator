@@ -8,28 +8,36 @@ namespace DRAMA_Emulator_GUI
 {
     class ExecuteCommand
     {
-        internal static void Execute(List<Command> CommandList)
+        public List<VarStorage> varStorage = new List<VarStorage>();
+        internal void Execute(List<Command> CommandList)
         {
             //Check variables
-
-           foreach(var list in CommandList)
+            foreach (var list in CommandList)
             {
                 if (!list.Variable.Equals(""))
                 {
-                    ProcessVars(CommandList.IndexOf(list));
+                    int index = CommandList.IndexOf(list);
+                    string varName = CommandList[index].Variable;
+                    int jumpIndex = CommandList.FindIndex(x => x.LineJump == varName);
+                    if (jumpIndex == -1)
+                    {
+                        //Check
+                    }
+                    else
+                    {
+                        varStorage.Add(new VarStorage
+                        {
+                            VarName = varName,
+                            Target = CommandList[jumpIndex].LineNumber
+                        });
+                    }
                 }
             }
         }
 
 
-        private static void ProcessVars(int index)
-        {
-            //lijst voor variabelen
-            
-        }
-
         private void ProcessHIA(string[] s, string l)
-        {
+        { //klopt niets van
             if (l.Contains("."))
             {
                 int i = l.IndexOf(".");
@@ -58,8 +66,5 @@ namespace DRAMA_Emulator_GUI
                 }
             }
         }
-
-
-
     }
 }

@@ -15,5 +15,11 @@ namespace DRAMA_Emulator_GUI
         public string SecondParam { get; set; }
         public string LineJump { get; set; } //kan lijnnummer of variabele zijn, nodig bij VSP/SPR
         public string Variable { get; set; }
+        public string Register { get; set; }
+    }
+    public class VarStorage
+    {
+        public string VarName { get; set; }
+        public int Target { get; set; }
     }
 }
