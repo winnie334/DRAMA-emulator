@@ -5,7 +5,6 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DRAMA_Emulator_GUI
@@ -44,28 +43,35 @@ namespace DRAMA_Emulator_GUI
                 else
                 {
                     Console.WriteLine("niet leeg");
-                    var zooi = ProcessLine(line); //to change variable name
+                    var processedLine = ProcessLine(line); //to change variable name
 
                     CommandList.Add(new Command
                     {
                         LineNumber = i,
-                        FunctionCode = zooi.functionCode,
+                        FunctionCode = processedLine.functionCode,
+                        InterpretationField = processedLine.interpretationField,
+                        FirstParam = processedLine.leftAccumulator,
+                        SecondParam = processedLine.rightAccumulator,
+                        LineJump = processedLine.lineJump,
+                        Variable = processedLine.variable
                         
                     });
                 }
                 i++;
             }
+            ExecuteCommand.Execute(CommandList);
         }
 
-        private (string functionCode, char interpretationField, string leftAccumulator, string rightAccumulator, string lineJump) ProcessLine(string line)
+        private (string functionCode, char interpretationField, string leftAccumulator, string rightAccumulator, string lineJump, string variable) ProcessLine(string line)
         {
             string functionCode = "";
             char interpretationField = '\0';
             string leftAccumulator = "";
             string rightAccumulator = "";
             string lineJump = "";
+            string variable = "";
 
-            //Seperate 
+            //Seperate
             if (line.Contains(':'))
             {
                 int v = line.IndexOf(':');
@@ -81,12 +87,34 @@ namespace DRAMA_Emulator_GUI
                 int leftSpacePosition = leftPart.LastIndexOf(" ");
                 leftAccumulator = leftPart.Substring(++leftSpacePosition);
                 string rightPart = line.Substring(++v);
-                int rightSpacePosition = rightPart.IndexOf(" ");
-                rightAccumulator = rightPart.Substring(0, rightSpacePosition);
+
+                int rightPartEnd = 0;
+                if(rightPart.Contains(" "))
+                    rightPartEnd = rightPart.IndexOf(" ");
+                
+                else
+                    rightPartEnd = rightPart.Length - 1;
+                
+                
+                rightAccumulator = rightPart.Substring(0, rightPartEnd);
+                if (!rightAccumulator.IsNumeric())
+                {
+                    variable = rightAccumulator;
+                }
+
+                line = line.Substring(0, leftSpacePosition);
+            }
+
+            if (line.Contains('.'))
+            {
+                int dot = line.IndexOf('.');
+                int interpretationFieldLocation = dot + 1;
+                interpretationField = line[interpretationFieldLocation];
+                line = String.Concat(line.Substring(0, dot), line.Substring(++interpretationFieldLocation));
             }
 
             char[] charSeperators = new char[] { ' ', '.', ',' };
-            string[] splitLine = line.Split(default(Char[]), StringSplitOptions.RemoveEmptyEntries);
+            string[] splitLine = line.Split(charSeperators, StringSplitOptions.RemoveEmptyEntries);
 
             foreach (string element in splitLine)
             {
@@ -131,9 +159,14 @@ namespace DRAMA_Emulator_GUI
                         break;
                     case "VSP":
                         functionCode = "VSP";
+                        lineJump = rightAccumulator;
                         break;
                     case "SPR":
                         functionCode = "SPR";
+                        lineJump = rightAccumulator;
+                        break;
+                    case "STP":
+                        functionCode = "STP";
                         break;
                     case "i":
                         interpretationField = 'i';
@@ -154,42 +187,22 @@ namespace DRAMA_Emulator_GUI
                         break;
                 }
             }
-            return (functionCode, interpretationField, leftAccumulator, rightAccumulator, lineJump);
+            return (functionCode, interpretationField, leftAccumulator, rightAccumulator, lineJump, variable);
         }
 
-        private void ProcessHIA(string[] s, string l)
-        {
-            if (l.Contains("."))
-            {
-                int i = l.IndexOf(".");
-                char InterpretationField = l[9];
-                switch (InterpretationField)
-                {
-                    case 'w':
-                        break;
-                    case 'a':
-                        break;
-                    case 'd':
-                        break;
-                    case 'i':
-                        break;
-                    default:
-                        //throw error
-                        break;
-                }
-            }
-            foreach (string element in s)
-            {
-                switch (element)
-                {
-                    case "":
-                        break;
-                }
-            }
-        }
+        
         private void ProcessBIG(string[] s)
         {
 
+        }
+    }
+
+    public static class StringExtensions
+    {
+        public static bool IsNumeric(this string input)
+        {
+            int number;
+            return int.TryParse(input, out number);
         }
     }
 }

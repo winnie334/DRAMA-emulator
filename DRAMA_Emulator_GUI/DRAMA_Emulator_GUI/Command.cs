@@ -10,6 +10,7 @@ namespace DRAMA_Emulator_GUI
     {
         public int LineNumber { get; set; }
         public string FunctionCode { get; set; }
+        public char InterpretationField { get; set; }
         public string FirstParam { get; set; }
         public string SecondParam { get; set; }
         public string LineJump { get; set; } //kan lijnnummer of variabele zijn, nodig bij VSP/SPR
