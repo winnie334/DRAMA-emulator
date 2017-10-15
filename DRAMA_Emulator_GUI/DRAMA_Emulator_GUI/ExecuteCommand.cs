@@ -10,9 +10,59 @@ namespace DRAMA_Emulator_GUI
     {
 
         public List<VarStorage> varStorage = new List<VarStorage>();
+        public List<Registers> registers = new List<Registers>();
+        public List<Memory> memory = new List<Memory>();
         internal void Execute()
         {
+            for(int i = 0; i < 10; i++)
+            {
+                registers.Add(new Registers
+                {
+                    RegisterNumber = "R" + i,
+                    Value = 0
+                });
+            }
+            
+
             ProcessVars();
+            foreach(var row in Form1.commandList)
+            {
+                switch (row.FunctionCode)
+                {
+                    case "HIA":
+                        ProcessHIA(row);
+                        break;
+                    case "BIG":
+                        ProcessBIG(row);
+                        break;
+                    case "OPT":
+                        break;
+                    case "AFT":
+                        break;
+                    case "VER":
+                        break;
+                    case "DEL":
+                        break;
+                    case "MOD":
+                        break;
+                    case "LEZ":
+                        break;
+                    case "DRU":
+                        break;
+                    case "NWL":
+                        break;
+                    case "DRS":
+                        break;
+                    case "VGL":
+                        break;
+                    case "VSP":
+                        break;
+                    case "SPR":
+                        break;
+                    case "STP":
+                        break;
+                }
+            }
             
         }
 
@@ -30,6 +80,7 @@ namespace DRAMA_Emulator_GUI
                     {
                         //Check
                         //Probably memory 'pointer'
+                        throw new NotImplementedException();
                     }
                     else
                     {
@@ -43,38 +94,69 @@ namespace DRAMA_Emulator_GUI
             }
         }
 
-        /*
-        private void ProcessHIA(string[] s, string l)
-        { //klopt niets van
+        
+        private void ProcessHIA(Command row)
+        {
+            int register = row.FirstParam[1];
 
             
-            if (l.Contains("."))
+            if(!row.SecondParam.IsNumeric()) //check if rightparameter is a number => variables are not yet supported
+                throw new NotImplementedException();
+
+            if (row.InterpretationField.Equals('\0') || row.InterpretationField.Equals('a'))
             {
-                int i = l.IndexOf(".");
-                char InterpretationField = l[9];
-                switch (InterpretationField)
+                //Memory Address
+                int value = memory[memory.FindIndex(x => x.MemoryAddress == int.Parse(row.SecondParam))].Value;
+                registers[register].Value = value;
+
+            }
+            else if (row.InterpretationField.Equals('w'))
+            {
+                //Getal
+                registers[register].Value = int.Parse(row.SecondParam);
+            }
+
+            else if (row.InterpretationField.Equals('i'))
+                throw new NotImplementedException();
+            else
+            {
+                throw new ArgumentException();
+            }
+        }
+
+
+
+        private void ProcessBIG(Command row)
+        {
+
+            if (!int.TryParse(row.SecondParam, out int address))
+            {
+                throw new ArgumentException();
+            }
+
+            if(!int.TryParse(row.FirstParam, out int value))
+            {
+                //register
+                value = registers[registers.FindIndex(x => x.RegisterNumber == row.FirstParam)].Value;
+                if(value == -1)
                 {
-                    case 'w':
-                        break;
-                    case 'a':
-                        break;
-                    case 'd':
-                        break;
-                    case 'i':
-                        break;
-                    default:
-                        //throw error
-                        break;
+                    throw new ArgumentOutOfRangeException();
                 }
             }
-            foreach (string element in s)
+
+            int memoryIndex = memory.FindIndex(x => x.MemoryAddress == address);
+            if (memoryIndex >= 0) //check if already in memory list
             {
-                switch (element)
-                {
-                    case "":
-                        break;
-                }
+                memory[memoryIndex].Value = int.Parse(row.FirstParam);
             }
-        }*/
+            else
+            {
+                memory.Add(new Memory
+                {
+                    Value = int.Parse(row.FirstParam),
+                    MemoryAddress = int.Parse(row.SecondParam)
+                });
+            }
+        }
     }
 }

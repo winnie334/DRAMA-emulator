@@ -22,4 +22,16 @@ namespace DRAMA_Emulator_GUI
         public string VarName { get; set; }
         public int Target { get; set; }
     }
+
+    public class Registers
+    {
+        public string RegisterNumber { get; set; }
+        public int Value { get; set; }
+    }
+    public class Memory
+    {
+        public int MemoryAddress { get; set; }
+        public int Value { get; set; }
+    }
+
 }
