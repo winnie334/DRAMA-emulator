@@ -13,7 +13,7 @@ namespace DRAMA_Emulator_GUI
     public partial class Form1 : Form
     {
 
-        public List<Command> CommandList = new List<Command>();
+        public static List<Command> commandList = new List<Command>();
 
         public Form1()
         {
@@ -43,7 +43,7 @@ namespace DRAMA_Emulator_GUI
                     Console.WriteLine("niet leeg");
                     var processedLine = ProcessLine(line); //to change variable name
 
-                    CommandList.Add(new Command
+                    commandList.Add(new Command
                     {
                         LineNumber = i,
                         FunctionCode = processedLine.functionCode,
@@ -59,7 +59,7 @@ namespace DRAMA_Emulator_GUI
                 i++;
             }
             ExecuteCommand exec = new ExecuteCommand();
-            exec.Execute(CommandList);
+            exec.Execute();
         }
 
         private (string functionCode, char interpretationField, string leftAccumulator, string rightAccumulator, string lineJump, string variable, string register) ProcessLine(string line)

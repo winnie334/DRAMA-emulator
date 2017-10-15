@@ -8,36 +8,46 @@ namespace DRAMA_Emulator_GUI
 {
     class ExecuteCommand
     {
+
         public List<VarStorage> varStorage = new List<VarStorage>();
-        internal void Execute(List<Command> CommandList)
+        internal void Execute()
         {
-            //Check variables
-            foreach (var list in CommandList)
+            ProcessVars();
+            
+        }
+
+
+        private void ProcessVars()
+        {
+            foreach (var row in Form1.commandList)
             {
-                if (!list.Variable.Equals(""))
+                if (!row.Variable.Equals(""))
                 {
-                    int index = CommandList.IndexOf(list);
-                    string varName = CommandList[index].Variable;
-                    int jumpIndex = CommandList.FindIndex(x => x.LineJump == varName);
+                    int rowIndex = Form1.commandList.IndexOf(row);
+                    string varName = Form1.commandList[rowIndex].Variable;
+                    int jumpIndex = Form1.commandList.FindIndex(x => x.LineJump == varName);
                     if (jumpIndex == -1)
                     {
                         //Check
+                        //Probably memory 'pointer'
                     }
                     else
                     {
                         varStorage.Add(new VarStorage
                         {
                             VarName = varName,
-                            Target = CommandList[jumpIndex].LineNumber
+                            Target = Form1.commandList[jumpIndex].LineNumber
                         });
                     }
                 }
             }
         }
 
-
+        /*
         private void ProcessHIA(string[] s, string l)
         { //klopt niets van
+
+            
             if (l.Contains("."))
             {
                 int i = l.IndexOf(".");
@@ -65,6 +75,6 @@ namespace DRAMA_Emulator_GUI
                         break;
                 }
             }
-        }
+        }*/
     }
 }
