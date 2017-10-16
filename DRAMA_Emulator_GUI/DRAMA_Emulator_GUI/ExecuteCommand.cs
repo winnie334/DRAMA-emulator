@@ -10,8 +10,8 @@ namespace DRAMA_Emulator_GUI
     {
 
         public List<VarStorage> varStorage = new List<VarStorage>();
-        public List<Registers> registers = new List<Registers>();
-        public List<Memory> memory = new List<Memory>();
+        public static List<Registers> registers = new List<Registers>();
+        public static List<Memory> memory = new List<Memory>();
         internal void Execute()
         {
             for(int i = 0; i < 10; i++)
@@ -36,8 +36,10 @@ namespace DRAMA_Emulator_GUI
                         ProcessBIG(row);
                         break;
                     case "OPT":
+                        ProcessOpt(row);
                         break;
                     case "AFT":
+                        ProcessAft(row);
                         break;
                     case "VER":
                         break;
@@ -98,7 +100,6 @@ namespace DRAMA_Emulator_GUI
         private void ProcessHIA(Command row)
         {
             int register = row.FirstParam[1];
-
             
             if(!row.SecondParam.IsNumeric()) //check if rightparameter is a number => variables are not yet supported
                 throw new NotImplementedException();
@@ -106,7 +107,7 @@ namespace DRAMA_Emulator_GUI
             if (row.InterpretationField.Equals('\0') || row.InterpretationField.Equals('a'))
             {
                 //Memory Address
-                int value = memory[memory.FindIndex(x => x.MemoryAddress == int.Parse(row.SecondParam))].Value;
+                int value = row.SecondParam.GetMemoryValue(); //Get value of memory address
                 registers[register].Value = value;
 
             }
@@ -137,7 +138,7 @@ namespace DRAMA_Emulator_GUI
             if(!int.TryParse(row.FirstParam, out int value))
             {
                 //register
-                value = registers[registers.FindIndex(x => x.RegisterNumber == row.FirstParam)].Value;
+                value = row.FirstParam.GetRegisterValue();
                 if(value == -1)
                 {
                     throw new ArgumentOutOfRangeException();
@@ -157,6 +158,77 @@ namespace DRAMA_Emulator_GUI
                     MemoryAddress = int.Parse(row.SecondParam)
                 });
             }
+        }
+
+        private void ProcessOpt(Command row)
+        {
+            if (row.InterpretationField.Equals('\0'))
+            {
+                //adres
+                int value = row.SecondParam.GetRegisterValue();
+                int registerIndex = registers.FindIndex(x => x.RegisterNumber == row.FirstParam);
+                registers[registerIndex].Value += value;
+            }
+            if (row.InterpretationField.Equals('w'))
+            {
+                //getal
+                int value = int.Parse(row.SecondParam);
+                int registerIndex = registers.FindIndex(x => x.RegisterNumber == row.FirstParam);
+                registers[registerIndex].Value += value;
+            }
+        }
+
+
+        private void ProcessAft(Command row)
+        {
+            if (row.InterpretationField.Equals('\0'))
+            {
+                //adres
+                int value = row.SecondParam.GetRegisterValue();
+                int registerIndex = registers.FindIndex(x => x.RegisterNumber == row.FirstParam);
+                registers[registerIndex].Value -= value;
+            }
+            if (row.InterpretationField.Equals('w'))
+            {
+                //getal
+                int value = int.Parse(row.SecondParam);
+                int registerIndex = registers.FindIndex(x => x.RegisterNumber == row.FirstParam);
+                registers[registerIndex].Value -= value;
+            }
+        }
+
+
+        private void ProcessVer(Command row)
+        {
+            if (row.InterpretationField.Equals('\0'))
+            {
+                //adres
+                int value = row.SecondParam.GetRegisterValue();
+                int registerIndex = registers.FindIndex(x => x.RegisterNumber == row.FirstParam);
+                registers[registerIndex].Value *= value;
+            }
+            if (row.InterpretationField.Equals('w'))
+            {
+                //getal
+                int value = int.Parse(row.SecondParam);
+                int registerIndex = registers.FindIndex(x => x.RegisterNumber == row.FirstParam);
+                registers[registerIndex].Value *= value;
+            }
+        }
+    }
+
+    public static class DramaTools
+    {
+        public static int GetRegisterValue (this string input)
+        {
+            int value = ExecuteCommand.registers[ExecuteCommand.registers.FindIndex(x => x.RegisterNumber == input)].Value;
+            return value;
+        }
+
+        public static int GetMemoryValue (this string input)
+        {
+            int value = ExecuteCommand.memory[ExecuteCommand.memory.FindIndex(x => x.MemoryAddress == int.Parse(input))].Value;
+            return value;
         }
     }
 }
