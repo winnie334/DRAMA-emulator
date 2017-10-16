@@ -162,58 +162,58 @@ namespace DRAMA_Emulator_GUI
 
         private void ProcessOpt(Command row)
         {
+            int value = 0;
             if (row.InterpretationField.Equals('\0'))
             {
                 //adres
-                int value = row.SecondParam.GetRegisterValue();
-                int registerIndex = registers.FindIndex(x => x.RegisterNumber == row.FirstParam);
-                registers[registerIndex].Value += value;
+                value = row.SecondParam.GetRegisterValue();
+                
             }
-            if (row.InterpretationField.Equals('w'))
+            else if (row.InterpretationField.Equals('w'))
             {
                 //getal
-                int value = int.Parse(row.SecondParam);
-                int registerIndex = registers.FindIndex(x => x.RegisterNumber == row.FirstParam);
-                registers[registerIndex].Value += value;
+                value = int.Parse(row.SecondParam);
             }
+            int registerIndex = registers.FindIndex(x => x.RegisterNumber == row.FirstParam);
+            registers[registerIndex].Value += value;
         }
 
 
         private void ProcessAft(Command row)
         {
+            int value = 0;
             if (row.InterpretationField.Equals('\0'))
             {
                 //adres
-                int value = row.SecondParam.GetRegisterValue();
-                int registerIndex = registers.FindIndex(x => x.RegisterNumber == row.FirstParam);
-                registers[registerIndex].Value -= value;
+                value = row.SecondParam.GetRegisterValue();
             }
-            if (row.InterpretationField.Equals('w'))
+            else if (row.InterpretationField.Equals('w'))
             {
                 //getal
-                int value = int.Parse(row.SecondParam);
-                int registerIndex = registers.FindIndex(x => x.RegisterNumber == row.FirstParam);
-                registers[registerIndex].Value -= value;
+                value = int.Parse(row.SecondParam);
             }
+            int registerIndex = registers.FindIndex(x => x.RegisterNumber == row.FirstParam);
+            registers[registerIndex].Value -= value;
+
+
         }
 
 
         private void ProcessVer(Command row)
         {
+            int value = 0;
             if (row.InterpretationField.Equals('\0'))
             {
                 //adres
-                int value = row.SecondParam.GetRegisterValue();
-                int registerIndex = registers.FindIndex(x => x.RegisterNumber == row.FirstParam);
-                registers[registerIndex].Value *= value;
+                value = row.SecondParam.GetRegisterValue();
             }
-            if (row.InterpretationField.Equals('w'))
+            else if (row.InterpretationField.Equals('w'))
             {
                 //getal
-                int value = int.Parse(row.SecondParam);
-                int registerIndex = registers.FindIndex(x => x.RegisterNumber == row.FirstParam);
-                registers[registerIndex].Value *= value;
+                value = int.Parse(row.SecondParam);
             }
+            int registerIndex = registers.FindIndex(x => x.RegisterNumber == row.FirstParam);
+            registers[registerIndex].Value *= value;
         }
     }
 
