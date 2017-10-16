@@ -44,6 +44,7 @@ namespace DRAMA_Emulator_GUI
                         ProcessVER(row);
                         break;
                     case "DEL":
+                        ProcessDEL(row);
                         break;
                     case "MOD":
                         break;
@@ -193,8 +194,6 @@ namespace DRAMA_Emulator_GUI
             }
             int registerIndex = registers.FindIndex(x => x.RegisterNumber == row.FirstParam);
             registers[registerIndex].Value -= value;
-
-
         }
 
 
@@ -213,6 +212,31 @@ namespace DRAMA_Emulator_GUI
             }
             int registerIndex = registers.FindIndex(x => x.RegisterNumber == row.FirstParam);
             registers[registerIndex].Value *= value;
+        }
+
+
+        private void ProcessDEL(Command row)
+        {
+            int value = 0;
+            if (row.InterpretationField.Equals('\0'))
+            {
+                //adres
+                value = row.SecondParam.GetRegisterValue();
+            }
+            else if (row.InterpretationField.Equals('w'))
+            {
+                //getal
+                value = int.Parse(row.SecondParam);
+            }
+            int registerIndex = registers.FindIndex(x => x.RegisterNumber == row.FirstParam);
+            registers[registerIndex].Value /= value;
+        }
+
+
+        private void ProcessLEZ(Command row)
+        {
+            int value = Console.Read();
+            registers[0].Value = value;
         }
     }
 
