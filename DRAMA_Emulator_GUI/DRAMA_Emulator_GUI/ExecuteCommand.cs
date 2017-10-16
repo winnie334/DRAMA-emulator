@@ -8,7 +8,6 @@ namespace DRAMA_Emulator_GUI
 {
     class ExecuteCommand
     {
-
         public List<VarStorage> varStorage = new List<VarStorage>();
         public static List<Registers> registers = new List<Registers>();
         public static List<Memory> memory = new List<Memory>();
@@ -129,7 +128,6 @@ namespace DRAMA_Emulator_GUI
 
         private void ProcessBIG(Command row)
         {
-
             if (!int.TryParse(row.SecondParam, out int address))
             {
                 throw new ArgumentException();
