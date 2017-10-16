@@ -36,12 +36,13 @@ namespace DRAMA_Emulator_GUI
                         ProcessBIG(row);
                         break;
                     case "OPT":
-                        ProcessOpt(row);
+                        ProcessOPT(row);
                         break;
                     case "AFT":
-                        ProcessAft(row);
+                        ProcessAFT(row);
                         break;
                     case "VER":
+                        ProcessVER(row);
                         break;
                     case "DEL":
                         break;
@@ -160,7 +161,7 @@ namespace DRAMA_Emulator_GUI
             }
         }
 
-        private void ProcessOpt(Command row)
+        private void ProcessOPT(Command row)
         {
             int value = 0;
             if (row.InterpretationField.Equals('\0'))
@@ -179,7 +180,7 @@ namespace DRAMA_Emulator_GUI
         }
 
 
-        private void ProcessAft(Command row)
+        private void ProcessAFT(Command row)
         {
             int value = 0;
             if (row.InterpretationField.Equals('\0'))
@@ -199,7 +200,7 @@ namespace DRAMA_Emulator_GUI
         }
 
 
-        private void ProcessVer(Command row)
+        private void ProcessVER(Command row)
         {
             int value = 0;
             if (row.InterpretationField.Equals('\0'))
